@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 import numpy as np
-from datetime import datetime
+from datetime import datetime, UTC
+
 
 class Strategy(ABC):
     def __init__(self, name: str, config: Dict[str, Any]):
@@ -14,7 +15,11 @@ class Strategy(ABC):
 
     def preprocess(self, market_data: Dict[str, Any]) -> Dict[str, Any]:
         x = market_data.copy()
-        x["timestamp"] = datetime.utcnow().timestamp()
+
+        # Replaced deprecated UTC call
+        x["timestamp"] = datetime.now(UTC).timestamp()
+
+        # Normalized mid price
         x["mid"] = (x.get("bid", 0) + x.get("ask", 0)) / 2
         return x
 
@@ -25,8 +30,12 @@ class Strategy(ABC):
     def postprocess(self, signal: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
         if signal is None:
             return None
+
         signal["strategy"] = self.name
-        signal["timestamp"] = datetime.utcnow().isoformat()
+
+        # Replaced deprecated UTC call
+        signal["timestamp"] = datetime.now(UTC).isoformat()
+
         self.last_signal = signal
         return signal
 
@@ -52,7 +61,10 @@ class Strategy(ABC):
     def apply_filters(self, signal: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         if signal is None:
             return None
+
+        # Confidence filter
         if "confidence" in signal:
             if signal["confidence"] < self.config.get("min_confidence", 0.1):
                 return None
+
         return signal
