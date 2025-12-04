@@ -1,0 +1,4 @@
+exchanges:
+  binance:
+    liquidity_weight: 1.0
+    latency_weight: 0.5

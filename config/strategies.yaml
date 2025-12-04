@@ -1,0 +1,5 @@
+strategies:
+  regime_switcher:
+    module: strategies.regime.regime_switcher
+    class: RegimeSwitcher
+    params: {}

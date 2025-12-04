@@ -1,0 +1,5 @@
+risk:
+  position_sizer:
+    risk_per_trade: 0.01
+  trailing_stop:
+    atr_mult: 2.5

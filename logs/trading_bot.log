@@ -1,0 +1,8 @@
+2025-12-04 20:33:36,607 | TradingBot | INFO | Logger test OK
+2025-12-04 20:33:36,608 | TradingBot | ERROR | Logger error test
+2025-12-04 20:33:36,608 | TradingBot | WARNING | Logger warn test
+2025-12-04 20:42:37,870 | TradingBot | INFO | strategy_loaded:grid
+2025-12-04 20:49:33,609 | TradingBot | INFO | {"timestamp": "2025-12-04T18:49:33.609711", "type": "trade", "data": {"side": "long", "price": 99.5, "size": 1, "timestamp": 1764874173.609701, "exchange": "binance"}}
+2025-12-04 20:55:21,314 | TradingBot | INFO | strategy_loaded:grid
+2025-12-04 20:56:16,535 | TradingBot | INFO | strategy_loaded:grid
+2025-12-04 20:56:16,544 | TradingBot | INFO | {"timestamp": "2025-12-04T18:56:16.543982", "type": "trade", "data": {"type": "open", "symbol": "BTCUSDT", "side": "short", "price": 98.5, "size": 4999.9999995, "timestamp": 1764874576.543972, "exchange": "binance"}}

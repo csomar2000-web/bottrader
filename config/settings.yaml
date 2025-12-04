@@ -1,0 +1,14 @@
+database: "sqlite+aiosqlite:///bot.db"
+
+feeds:
+  ws:
+    binance: ws://binance/ws
+  rest:
+    binance: https://api.binance.com
+
+strategies:
+  lstm_strategy:
+    module: strategies.ml.lstm_strategy
+    class: LSTMStrategy
+    params:
+      min_conf: 0.45
