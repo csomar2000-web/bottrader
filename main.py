@@ -4,12 +4,14 @@ import sys
 from pathlib import Path
 from core.env import load_environment
 from scripts.live_trading import LiveTradingBot
-
+from core.config import get_config
 CONFIG_PATH = Path("config/settings.yaml")
 
 
 async def main():
     load_environment()
+    cfg = get_config()
+    print("Loaded config:", cfg)
     try:
         if not CONFIG_PATH.exists():
             print(f"Error: Config file not found at {CONFIG_PATH}")
