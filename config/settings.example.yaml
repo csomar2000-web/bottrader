@@ -1,88 +1,113 @@
-diff --git a/config/settings.example.yaml b/config/settings.example.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..97e1b37295a54081644f9b3c214bec94bd7494be
---- /dev/null
-+++ b/config/settings.example.yaml
-@@ -0,0 +1,82 @@
-+# Base runtime configuration for the live trading bot.
-+# Replace the placeholder credentials with real values before running in production.
-+
-+db: "sqlite+aiosqlite:///bot.db"
-+
-+feeds:
-+  ws:
-+    binance: "wss://stream.binance.com:9443/ws/btcusdt@depth"
-+    coinbase: "wss://ws-feed.exchange.coinbase.com"
-+  rest:
-+    binance: "https://api.binance.com"
-+    coinbase: "https://api.exchange.coinbase.com"
-+
-+strategies:
-+  lstm_strategy:
-+    module: strategies.ml.lstm_strategy
-+    class: LSTMStrategy
-+    params:
-+      min_conf: 0.45
-+
-+risk:
-+  daily_loss_limit: 0.15
-+  max_exposure: 0.3
-+  max_consecutive_losses: 5
-+  position_sizer:
-+    risk_per_trade: 0.01
-+  trailing_stop:
-+    atr_mult: 2.5
-+
-+exchanges:
-+  binance:
-+    api_key: "BINANCE_API_KEY"
-+    api_secret: "BINANCE_API_SECRET"
-+    rest_endpoint: "https://api.binance.com"
-+    ws_endpoint: "wss://stream.binance.com:9443/ws"
-+    liquidity_weight: 1.0
-+    latency_weight: 0.5
-+  coinbase:
-+    api_key: "COINBASE_API_KEY"
-+    api_secret: "COINBASE_API_SECRET"
-+    rest_endpoint: "https://api.exchange.coinbase.com"
-+    ws_endpoint: "wss://ws-feed.exchange.coinbase.com"
-+    liquidity_weight: 0.8
-+    latency_weight: 0.4
-+
-+execution:
-+  validator:
-+    max_spread: 5
-+  router:
-+    prefer: "highest_liquidity"
-+  executor:
-+    slippage: 0.0005
-+    partial_fills: true
-+
-+portfolio:
-+  starting_balance: 10000
-+  hedging:
-+    enabled: false
-+    hedge_ratio: 0.25
-+
-+sentiment:
-+  max_items: 40
-+  model:
-+    model: "cardiffnlp/twitter-roberta-base-sentiment"
-+  news:
-+    api_key: "NEWS_API_KEY"
-+    endpoint: "https://newsapi.org/v2/everything"
-+    cooldown: 3
-+  twitter:
-+    bearer: "TWITTER_BEARER_TOKEN"
-+    cooldown: 1
-+  reddit:
-+    cooldown: 2
-+
-+notify:
-+  telegram:
-+    token: "TELEGRAM_BOT_TOKEN"
-+    chat_id: "TELEGRAM_CHAT_ID"
-+    cooldown: 0.5
-+  discord:
-+    webhook: "https://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN"
-+    cooldown: 0.5
+# ============================================================
+# Example Runtime Configuration for the Trading Bot
+# Copy this file to settings.yaml and replace placeholder secrets
+# ============================================================
+
+db: "sqlite+aiosqlite:///bot.db"
+
+# ------------------------------------------------------------
+# Market Data Feeds
+# ------------------------------------------------------------
+feeds:
+  ws:
+    binance: "wss://stream.binance.com:9443/ws/btcusdt@depth"
+    coinbase: "wss://ws-feed.exchange.coinbase.com"
+  rest:
+    binance: "https://api.binance.com"
+    coinbase: "https://api.exchange.coinbase.com"
+
+# ------------------------------------------------------------
+# Strategy Configuration
+# ------------------------------------------------------------
+strategies:
+  lstm_strategy:
+    module: "strategies.ml.lstm_strategy"
+    class: "LSTMStrategy"
+    params:
+      min_conf: 0.45
+
+# ------------------------------------------------------------
+# Risk Management
+# ------------------------------------------------------------
+risk:
+  daily_loss_limit: 0.15 # Max daily loss 15%
+  max_exposure: 0.3 # Max 30% total portfolio exposure
+  max_consecutive_losses: 5
+  position_sizer:
+    risk_per_trade: 0.01 # 1% per trade
+  trailing_stop:
+    atr_mult: 2.5 # ATR multiplier
+
+# ------------------------------------------------------------
+# Exchange Connectivity
+# ------------------------------------------------------------
+exchanges:
+  binance:
+    api_key: "BINANCE_API_KEY"
+    api_secret: "BINANCE_API_SECRET"
+    rest_endpoint: "https://api.binance.com"
+    ws_endpoint: "wss://stream.binance.com:9443/ws"
+    liquidity_weight: 1.0
+    latency_weight: 0.5
+
+  coinbase:
+    api_key: "COINBASE_API_KEY"
+    api_secret: "COINBASE_API_SECRET"
+    rest_endpoint: "https://api.exchange.coinbase.com"
+    ws_endpoint: "wss://ws-feed.exchange.coinbase.com"
+    liquidity_weight: 0.8
+    latency_weight: 0.4
+
+# ------------------------------------------------------------
+# Execution Engine Settings
+# ------------------------------------------------------------
+execution:
+  validator:
+    max_spread: 5 # Max allowed spread in ticks
+  router:
+    prefer: "highest_liquidity" # Routing preference strategy
+  executor:
+    slippage: 0.0005 # 0.05% assumed slippage
+    partial_fills: true
+
+# ------------------------------------------------------------
+# Portfolio Settings
+# ------------------------------------------------------------
+portfolio:
+  starting_balance: 10000
+  hedging:
+    enabled: false
+    hedge_ratio: 0.25
+
+# ------------------------------------------------------------
+# Sentiment Analysis Engine
+# ------------------------------------------------------------
+sentiment:
+  max_items: 40
+  model:
+    model: "cardiffnlp/twitter-roberta-base-sentiment"
+
+  news:
+    api_key: "NEWS_API_KEY"
+    endpoint: "https://newsapi.org/v2/everything"
+    cooldown: 3
+
+  twitter:
+    bearer: "TWITTER_BEARER_TOKEN"
+    cooldown: 1
+
+  reddit:
+    cooldown: 2
+
+# ------------------------------------------------------------
+# Notifications
+# ------------------------------------------------------------
+notify:
+  telegram:
+    token: "TELEGRAM_BOT_TOKEN"
+    chat_id: "TELEGRAM_CHAT_ID"
+    cooldown: 0.5
+
+  discord:
+    webhook: "https://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN"
+    cooldown: 0.5
