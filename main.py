@@ -1,34 +1,34 @@
 import asyncio
-import yaml
 import sys
-from pathlib import Path
+
 from core.env import load_environment
-from scripts.live_trading import LiveTradingBot
 from core.config import get_config
-CONFIG_PATH = Path("config/settings.yaml")
+from core.log import setup_logging, get_logger
+import core.errors  
+
+from scripts.live_trading import LiveTradingBot
 
 
 async def main():
+    setup_logging()
+    log = get_logger("main")
+
     load_environment()
-    cfg = get_config()
-    print("Loaded config:", cfg)
+    log.info("Environment loaded")
+
     try:
-        if not CONFIG_PATH.exists():
-            print(f"Error: Config file not found at {CONFIG_PATH}")
-            sys.exit(1)
-        
-        # Load configuration
-        with open(CONFIG_PATH, "r") as f:
-            cfg = yaml.safe_load(f)
-        
-        bot = LiveTradingBot(cfg)
-        await bot.start()
-    
-    except yaml.YAMLError as e:
-        print(f"Error parsing YAML config: {e}")
-        sys.exit(1)
+        cfg = get_config()
+        log.info("Configuration loaded", context={"execution_mode": cfg.execution.mode})
     except Exception as e:
-        print(f"Unexpected error: {e}")
+        log.error("Failed to load configuration", context={"error": str(e)})
+        sys.exit(1)
+
+    try:
+        bot = LiveTradingBot(cfg)
+        log.info("Starting live trading bot...")
+        await bot.start()
+    except Exception as e:
+        log.error("Fatal error during bot startup", context={"error": str(e)})
         sys.exit(1)
 
 
