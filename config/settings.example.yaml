@@ -1,30 +1,28 @@
-diff --git a/config/settings.yaml b/config/settings.yaml
-index 448cb5a6e44ad98ace40d678c6c1c2e91d87242b..97e1b37295a54081644f9b3c214bec94bd7494be 100644
---- a/config/settings.yaml
-+++ b/config/settings.yaml
-@@ -1,14 +1,82 @@
--database: "sqlite+aiosqlite:///bot.db"
+diff --git a/config/settings.example.yaml b/config/settings.example.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..97e1b37295a54081644f9b3c214bec94bd7494be
+--- /dev/null
++++ b/config/settings.example.yaml
+@@ -0,0 +1,82 @@
 +# Base runtime configuration for the live trading bot.
 +# Replace the placeholder credentials with real values before running in production.
 +
 +db: "sqlite+aiosqlite:///bot.db"
- 
- feeds:
-   ws:
--    binance: ws://binance/ws
++
++feeds:
++  ws:
 +    binance: "wss://stream.binance.com:9443/ws/btcusdt@depth"
 +    coinbase: "wss://ws-feed.exchange.coinbase.com"
-   rest:
--    binance: https://api.binance.com
++  rest:
 +    binance: "https://api.binance.com"
 +    coinbase: "https://api.exchange.coinbase.com"
- 
- strategies:
-   lstm_strategy:
-     module: strategies.ml.lstm_strategy
-     class: LSTMStrategy
-     params:
-       min_conf: 0.45
++
++strategies:
++  lstm_strategy:
++    module: strategies.ml.lstm_strategy
++    class: LSTMStrategy
++    params:
++      min_conf: 0.45
 +
 +risk:
 +  daily_loss_limit: 0.15
